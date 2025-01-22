@@ -4,17 +4,27 @@ TILETYPES = [
 
 class Tile:
     def __init__(self, position, layers):
-        self.position = position
-        self.layers = layers
+        self._position = position
+        self._layers = layers
     
     def __repr__(self):
         return f"{self.position}:{self.layers}"
     
-    def append_layer(self, layer):
-        self.layers.append(layer)
+    @property
+    def layers(self):
+        return self._layers
+
+    @layers.setter
+    def layers(self, new_layers):
+        self._layers = new_layers
     
-    def clear_layers(self):
-        self.layers = []
+    @property
+    def position(self):
+        return self._position
+
+    @position.setter
+    def position(self, new_position):
+        self._position = new_position
 
 class TileGrid:
     def __init__(self, size):
@@ -40,5 +50,11 @@ class TileGrid:
 def fill_grid(grid, tile_type):
     for row in grid.grid:
         for tile in row:
-            tile.clear_layers()
-            tile.append_layer(tile_type)
+            tile.layers = [tile_type]
+
+def draw_grid(grid, screen, type_to_image_map, tile_size):
+    for row in grid.grid:
+        for tile in row:
+            for layer in tile.layers:
+                screen_position = (tile.position[0] * tile_size[0], tile.position[1] * tile_size[1])
+                screen.blit(type_to_image_map[layer], screen_position)
