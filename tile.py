@@ -55,6 +55,6 @@ def fill_grid(grid, tile_type):
 def draw_grid(grid, screen, type_to_image_map, tile_size):
     for row in grid.grid:
         for tile in row:
+            screen_position = (tile.position[0] * tile_size[0], tile.position[1] * tile_size[1])
             for layer in tile.layers:
-                screen_position = (tile.position[0] * tile_size[0], tile.position[1] * tile_size[1])
                 screen.blit(type_to_image_map[layer], screen_position)

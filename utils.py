@@ -7,7 +7,7 @@ def load_assets(raw_asset_path):
     asset_path = Path(raw_asset_path)
 
     # Load sprite files
-    sprites = [pygame.image.load(sprite) for sprite in asset_path.iterdir() if not sprite.is_dir()]
+    sprites = {sprite.stem: [pygame.image.load(sprite)] for sprite in asset_path.iterdir() if not sprite.is_dir()}
 
     # Locate sprite folders that contain animations
     animation_folders = [sprite_animation for sprite_animation in asset_path.iterdir() if sprite_animation.is_dir()]
@@ -18,6 +18,6 @@ def load_assets(raw_asset_path):
         for frame_file in sorted(animation_folder.iterdir()):
             animation.append(pygame.image.load(frame_file))
 
-        sprites.append(animation)
+        sprites[animation_folder.name] = animation
 
     return sprites
