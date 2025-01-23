@@ -1,6 +1,7 @@
 import pygame
 import sys
 
+import utils
 import tile
 
 GRID_SIZE = (5, 5)
@@ -25,7 +26,7 @@ pygame.display.set_caption("American Moon Oil")
 TILE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
 
 tile_to_image_map = {
-    "moon_floor": pygame.image.load("assets/white_square.jpg")
+    "moon_floor": pygame.image.load("assets/white_square.jpg"),
 }
 
 for image in tile_to_image_map.values():
