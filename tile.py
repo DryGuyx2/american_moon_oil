@@ -1,7 +1,3 @@
-TILETYPES = [
-    "moon_floor"
-]
-
 class Tile:
     def __init__(self, position, layers):
         self._position = position

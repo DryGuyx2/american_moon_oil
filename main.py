@@ -1,36 +1,39 @@
 import pygame
 import sys
 
-import utils
+# import utils
 import tile
+import cursor
 
 GRID_SIZE = (5, 5)
+SCREEN_SIZE = (640, 640)
+TILE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
+TILE_IMAGE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
+FRAMERATE = 60
 
+
+tile_to_image_map = {
+    "moon_floor": pygame.image.load("assets/white_square.jpg"),
+    "oil_pump": pygame.image.load("assets/oil_pump.png"),
+}
+
+# Scale all tile images to the same size
+for key, image in tile_to_image_map.items():
+    tile_to_image_map[key] = pygame.transform.scale(image, TILE_IMAGE_SIZE)
+
+# Initialize grid with moon floor tile sprite as bottom layer
 grid = tile.TileGrid(GRID_SIZE)
-tile.fill_grid(grid, tile.TILETYPES[0])
+tile.fill_grid(grid, "moon_floor")
 
 print(f"Grid:\n{grid}")
 
-
-FRAMERATE = 60
 
 pygame.init()
 
 clock = pygame.time.Clock()
 
-SCREEN_SIZE = (500, 500)
 screen = pygame.display.set_mode(SCREEN_SIZE)
 pygame.display.set_caption("American Moon Oil")
-
-
-TILE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
-
-tile_to_image_map = {
-    "moon_floor": pygame.image.load("assets/white_square.jpg"),
-}
-
-for image in tile_to_image_map.values():
-    pygame.transform.scale(image, (TILE_SIZE[0], TILE_SIZE[1]))
 
 while True:
     screen.fill((0, 0, 0))
