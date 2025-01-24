@@ -2,10 +2,10 @@ class Tile:
     def __init__(self, position, layers):
         self._position = position
         self._layers = layers
-    
+
     def __repr__(self):
         return f"{self.position}:{self.layers}"
-    
+
     @property
     def layers(self):
         return self._layers
@@ -13,7 +13,7 @@ class Tile:
     @layers.setter
     def layers(self, new_layers):
         self._layers = new_layers
-    
+
     @property
     def position(self):
         return self._position
@@ -31,14 +31,14 @@ class TileGrid:
                 row.append(Tile((row_position, column_position), []))
             self._grid.append(row)
             row = []
-    
+
     def __repr__(self):
         return f"{self._grid}"
-    
+
     @property
     def grid(self):
         return self._grid
-    
+
     @grid.setter
     def grid(self, new_grid):
         self._grid = new_grid

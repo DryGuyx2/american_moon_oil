@@ -1,5 +1,5 @@
-import pygame
 import sys
+import pygame
 
 # import utils
 import tile

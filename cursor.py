@@ -4,7 +4,7 @@ class Cursor:
     def __init__(self, grid_size):
         self._position = (0, 0)
         self._grid_size = grid_size
-    
+
     def __repr__(self):
         return f"{self.position}"
 
@@ -25,7 +25,7 @@ def is_touching_edge(position, grid_size, edge):
         return position[1] == 0
     elif edge == "bottom":
         return position[1] == grid_size[1] - 1
-    
+
     raise NameError("Invalid edge name")
 
 def move_cursor(event, cursor, grid_size):
