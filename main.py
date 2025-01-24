@@ -24,9 +24,9 @@ for key, image in tile_to_image_map.items():
 # Initialize grid with moon floor tile sprite as bottom layer
 grid = tile.TileGrid(GRID_SIZE)
 tile.fill_grid(grid, "moon_floor")
-
 print(f"Grid:\n{grid}")
 
+tile_cursor = cursor.Cursor(GRID_SIZE)
 
 pygame.init()
 
@@ -45,5 +45,9 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+        if event.type == pygame.KEYDOWN:
+            cursor.move_cursor(event, tile_cursor, GRID_SIZE)
+            print(f"Cursor: {tile_cursor}")
 
     clock.tick(FRAMERATE)
