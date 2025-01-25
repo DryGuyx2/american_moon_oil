@@ -11,15 +11,20 @@ TILE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
 TILE_IMAGE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
 FRAMERATE = 60
 
-
-tile_to_image_map = {
+assets = {
     "moon_floor": pygame.image.load("assets/white_square.jpg"),
     "oil_pump": pygame.image.load("assets/oil_pump.png"),
+    "cursor": pygame.image.load("assets/cursor.png")
 }
 
+tile_sprites = [
+    "moon_floor",
+    "oil_pump",
+]
+
 # Scale all tile images to the same size
-for key, image in tile_to_image_map.items():
-    tile_to_image_map[key] = pygame.transform.scale(image, TILE_IMAGE_SIZE)
+for tile_sprite in tile_sprites:
+    assets[tile_sprite] = pygame.transform.scale(assets[tile_sprite], TILE_IMAGE_SIZE)
 
 # Initialize grid with moon floor tile sprite as bottom layer
 grid = tile.TileGrid(GRID_SIZE)
@@ -44,14 +49,13 @@ def handle_events():
 
         if event.type == pygame.KEYDOWN:
             cursor.move_cursor(event, tile_cursor, grid)
-
             print(f"Cursor: {tile_cursor}")
 
 while True:
     handle_events()
 
     screen.fill((0, 0, 0))
-    tile.draw_grid(grid, screen, tile_to_image_map, TILE_SIZE)
+    tile.draw_grid(grid, screen, assets, TILE_SIZE, cursor_position=tile_cursor.position)
 
     pygame.display.flip()
 

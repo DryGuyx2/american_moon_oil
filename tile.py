@@ -48,9 +48,12 @@ def fill_grid(grid, tile_type):
         for tile in row:
             tile.layers = [tile_type]
 
-def draw_grid(grid, screen, type_to_image_map, tile_size):
-    for row in grid.grid:
-        for tile in row:
+def draw_grid(grid, screen, assets, tile_size, cursor_position=None):
+    for row_index, row in enumerate(grid.grid):
+        for tile_index, tile in enumerate(row):
             screen_position = (tile.position[0] * tile_size[0], tile.position[1] * tile_size[1])
             for layer in tile.layers:
-                screen.blit(type_to_image_map[layer], screen_position)
+                screen.blit(assets[layer], screen_position)
+            
+            if cursor_position == (row_index, tile_index):
+                screen.blit(assets["cursor"], screen_position)
