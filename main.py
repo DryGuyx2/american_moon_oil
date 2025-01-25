@@ -25,7 +25,7 @@ for key, image in tile_to_image_map.items():
 grid = tile.TileGrid(GRID_SIZE)
 tile.fill_grid(grid, "moon_floor")
 grid.grid[0][0].layers.append("oil_pump")
-print(f"Grid:\n{grid}")
+#print(f"Grid:\n{grid}")
 
 tile_cursor = cursor.Cursor(GRID_SIZE)
 
@@ -43,8 +43,8 @@ def handle_events():
             sys.exit()
 
         if event.type == pygame.KEYDOWN:
-            max_cursor_height = len(grid.grid[tile_cursor.position[0]][tile_cursor.position[1]].layers) - 1
-            cursor.move_cursor(event, tile_cursor, GRID_SIZE, max_cursor_height)
+            cursor.move_cursor(event, tile_cursor, grid)
+
             print(f"Cursor: {tile_cursor}")
 
 while True:

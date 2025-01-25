@@ -37,18 +37,25 @@ def is_touching_edge(position, grid_size, edge):
 
     raise NameError("Invalid edge name")
 
-def move_cursor(event, cursor, grid_size, max_height):
+def move_cursor(event, cursor, grid):
+    max_cursor_tile_height = len(grid.grid[cursor.position[0]][cursor.position[1]].layers) - 1
+
+    if event.key == pygame.K_RETURN:
+        if cursor.height <= 0:
+            cursor.height = max_cursor_tile_height
+            return
+        cursor.height -= 1
+        return
+
+    grid_size = (len(grid.grid[0]) - 1, len(grid.grid) - 1)
+
     if event.key == pygame.K_LEFT and not is_touching_edge(cursor.position, grid_size, "left"):
         cursor.position = (cursor.position[0] - 1, cursor.position[1])
     elif event.key == pygame.K_RIGHT and not is_touching_edge(cursor.position, grid_size, "right"):
         cursor.position = (cursor.position[0] + 1, cursor.position[1])
     elif event.key == pygame.K_UP and not is_touching_edge(cursor.position, grid_size, "top"):
-        cursor.position = (cursor.position[0], cursor.position[1] - 1)
-    elif event.key == pygame.K_DOWN and not is_touching_edge(cursor.position, grid_size, "bottom"):
         cursor.position = (cursor.position[0], cursor.position[1] + 1)
-    elif event.key == pygame.K_RETURN:
-        if cursor.height >= max_height:
-            cursor.height = 0
-            return
+    elif event.key == pygame.K_DOWN and not is_touching_edge(cursor.position, grid_size, "bottom"):
+        cursor.position = (cursor.position[0], cursor.position[1] - 1)
 
-        cursor.height += 1
+    cursor.height = len(grid.grid[cursor.position[0]][cursor.position[1]].layers) - 1
