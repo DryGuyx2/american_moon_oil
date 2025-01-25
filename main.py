@@ -12,7 +12,7 @@ TILE_IMAGE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1
 FRAMERATE = 60
 
 assets = {
-    "moon_floor": pygame.image.load("assets/white_square.jpg"),
+    "moon_floor": pygame.image.load("assets/moon_floor.png"),
     "oil_pump": pygame.image.load("assets/oil_pump.png"),
     "cursor": pygame.image.load("assets/cursor.png")
 }
