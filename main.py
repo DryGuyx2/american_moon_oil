@@ -5,24 +5,29 @@ import pygame
 import tile
 import cursor
 
-GRID_SIZE = (5, 5)
+# Configure grid, and screen size
+# Tile sizes are automatically scaled accordingly
 SCREEN_SIZE = (640, 640)
+GRID_SIZE = (5, 5)
 TILE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
 TILE_IMAGE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
+
 FRAMERATE = 60
 
+# Load assets
 assets = {
     "moon_floor": pygame.image.load("assets/moon_floor.png"),
     "oil_pump": pygame.image.load("assets/oil_pump.png"),
     "cursor": pygame.image.load("assets/cursor.png")
 }
 
+# Specify tile images to be scaled to the same size
 tile_sprites = [
     "moon_floor",
     "oil_pump",
 ]
 
-# Scale all tile images to the same size
+# Scale all the tile images
 for tile_sprite in tile_sprites:
     assets[tile_sprite] = pygame.transform.scale(assets[tile_sprite], TILE_IMAGE_SIZE)
 
@@ -32,8 +37,10 @@ tile.fill_grid(grid, "moon_floor")
 grid.grid[0][0].layers.append("oil_pump")
 #print(f"Grid:\n{grid}")
 
+# Initialize cursor
 tile_cursor = cursor.Cursor(GRID_SIZE)
 
+# Initialize and set up pygame
 pygame.init()
 
 clock = pygame.time.Clock()
