@@ -1,4 +1,5 @@
 import sys
+
 import pygame
 
 # import utils
@@ -54,16 +55,23 @@ def handle_events():
             pygame.quit()
             sys.exit()
 
+        selected_tile = grid.grid[tile_cursor.position[0]][tile_cursor.position[1]]
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_c:
+                if not "oil_pump" in selected_tile.layers:
+                    selected_tile.layers.append("oil_pump")
+                return
+
             cursor.move_cursor(event, tile_cursor, grid)
             print(f"Cursor: {tile_cursor}")
 
+deltatime = 0
 while True:
+    deltatime = clock.tick(FRAMERATE)/1000
+    #print(f"Deltatime: {deltatime}")
     handle_events()
 
     screen.fill((0, 0, 0))
     tile.draw_grid(grid, screen, assets, TILE_SIZE, cursor_position=tile_cursor.position)
 
     pygame.display.flip()
-
-    clock.tick(FRAMERATE)
