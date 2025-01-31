@@ -16,11 +16,14 @@ TILE_IMAGE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1
 PRODUCTION_TIME = 2
 FRAMERATE = 60
 
+pygame.init()
+
 # Load assets
 assets = {
     "moon_floor": pygame.image.load("assets/moon_floor.png"),
     "oil_pump": pygame.image.load("assets/oil_pump.png"),
-    "cursor": pygame.image.load("assets/cursor.png")
+    "cursor": pygame.image.load("assets/cursor.png"),
+    "font": pygame.font.Font("assets/nintendo-nes-font.ttf", 32),
 }
 
 # Specify tile images to be scaled to the same size
@@ -34,7 +37,7 @@ for tile_sprite in tile_sprites:
     assets[tile_sprite] = pygame.transform.scale(assets[tile_sprite], TILE_IMAGE_SIZE)
 
 STRUCTURE_MAP = {
-    "oil_pump": {"product": "oil", "amount": 3}
+    "oil_pump": {"product": "oil", "amount": 3},
 }
 
 stats = {}
@@ -48,8 +51,7 @@ grid.grid[0][0].layers.append("oil_pump")
 # Initialize cursor
 tile_cursor = cursor.Cursor(GRID_SIZE)
 
-# Initialize and set up pygame
-pygame.init()
+# Set up pygame
 
 clock = pygame.time.Clock()
 
@@ -76,6 +78,14 @@ def handle_events():
             cursor.move_cursor(event, tile_cursor, grid)
             print(f"Cursor: {tile_cursor}")
 
+def draw_stats(stats, assets):
+    stat_position_y = 0
+    for stat, value in stats.items():
+        text = assets["font"].render(f"{stat}: {value}", False, (255, 255, 255))
+        position = (0, stat_position_y * SCREEN_SIZE[1] // 10)
+        screen.blit(text, position)
+        stat_position_y += 1
+
 PRODUCTION_UPDATE_EVENT = pygame.USEREVENT + 1
 pygame.time.set_timer(PRODUCTION_UPDATE_EVENT, PRODUCTION_TIME * 1000)
 
@@ -84,5 +94,6 @@ while True:
 
     screen.fill((0, 0, 0))
     tile.draw_grid(grid, screen, assets, TILE_SIZE, cursor_position=tile_cursor.position)
+    draw_stats(stats, assets)
 
     pygame.display.flip()
