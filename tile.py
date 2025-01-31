@@ -54,6 +54,20 @@ def draw_grid(grid, screen, assets, tile_size, cursor_position=None):
             screen_position = (tile.position[0] * tile_size[0], tile.position[1] * tile_size[1])
             for layer in tile.layers:
                 screen.blit(assets[layer], screen_position)
-            
+
             if cursor_position == (row_index, tile_index):
                 screen.blit(assets["cursor"], screen_position)
+
+
+def process_structures(grid, stats, STRUCTURE_MAP):
+    for row in grid.grid:
+        for tile in row:
+            for layer in tile.layers:
+                if not layer in STRUCTURE_MAP.keys():
+                    continue
+
+                if STRUCTURE_MAP[layer]["product"] in stats.keys():
+                    stats[STRUCTURE_MAP[layer]["product"]] += STRUCTURE_MAP[layer]["amount"]
+                    continue
+
+                stats[STRUCTURE_MAP[layer]["product"]] = STRUCTURE_MAP[layer]["amount"]

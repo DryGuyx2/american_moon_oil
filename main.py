@@ -13,6 +13,7 @@ GRID_SIZE = (5, 5)
 TILE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
 TILE_IMAGE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
 
+PRODUCTION_TIME = 2
 FRAMERATE = 60
 
 # Load assets
@@ -31,6 +32,12 @@ tile_sprites = [
 # Scale all the tile images
 for tile_sprite in tile_sprites:
     assets[tile_sprite] = pygame.transform.scale(assets[tile_sprite], TILE_IMAGE_SIZE)
+
+STRUCTURE_MAP = {
+    "oil_pump": {"product": "oil", "amount": 3}
+}
+
+stats = {}
 
 # Initialize grid with moon floor tile sprite as bottom layer
 grid = tile.TileGrid(GRID_SIZE)
@@ -55,6 +62,10 @@ def handle_events():
             pygame.quit()
             sys.exit()
 
+        if event.type == PRODUCTION_UPDATE_EVENT:
+            tile.process_structures(grid, stats, STRUCTURE_MAP)
+            print(f"Stats: {stats}")
+
         selected_tile = grid.grid[tile_cursor.position[0]][tile_cursor.position[1]]
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_c:
@@ -65,10 +76,10 @@ def handle_events():
             cursor.move_cursor(event, tile_cursor, grid)
             print(f"Cursor: {tile_cursor}")
 
-deltatime = 0
+PRODUCTION_UPDATE_EVENT = pygame.USEREVENT + 1
+pygame.time.set_timer(PRODUCTION_UPDATE_EVENT, PRODUCTION_TIME * 1000)
+
 while True:
-    deltatime = clock.tick(FRAMERATE)/1000
-    #print(f"Deltatime: {deltatime}")
     handle_events()
 
     screen.fill((0, 0, 0))
