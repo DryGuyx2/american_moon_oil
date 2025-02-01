@@ -71,3 +71,19 @@ def process_structures(grid, stats, STRUCTURE_MAP):
                     continue
 
                 stats[STRUCTURE_MAP[layer]["product"]] = STRUCTURE_MAP[layer]["amount"]
+
+def build_structure(stats, structure_name, tile, structure_map):
+    if structure_name in tile.layers:
+        return
+
+    for build_resource, amount in structure_map[structure_name]["build_resources"].items():
+        if not build_resource in stats.keys():
+            return
+
+        if stats[build_resource] < amount:
+            return
+
+    for build_resource, amount in structure_map[structure_name]["build_resources"].items():
+        stats[build_resource] -= amount
+
+    tile.layers.append(structure_name)
