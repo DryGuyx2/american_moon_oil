@@ -23,7 +23,7 @@ assets = {
     "moon_floor": pygame.image.load("assets/moon_floor.png"),
     "oil_pump": pygame.image.load("assets/oil_pump.png"),
     "cursor": pygame.image.load("assets/cursor.png"),
-    "font": pygame.font.Font("assets/nintendo-nes-font.ttf"),
+    "font": pygame.font.Font("assets/nintendo-nes-font.ttf", 32),
 }
 
 # Specify tile images to be scaled to the same size
@@ -42,6 +42,11 @@ STRUCTURE_MAP = {
 
 stats = {
     "money": 500,
+}
+
+STAT_DRAW_COLORS = {
+    "money": (0, 184, 0),
+    "oil": (0, 0, 0),
 }
 
 # Initialize grid with moon floor tile sprite as bottom layer
@@ -78,10 +83,16 @@ def handle_events(structure_map):
             cursor.move_cursor(event, tile_cursor, grid)
             print(f"Cursor: {tile_cursor}")
 
-def draw_stats(stats, assets):
+def draw_stats(stats, assets, stat_colors, defaul_stat_color=(255, 255, 255)):
     stat_position_y = 0
     for stat, value in stats.items():
-        text = assets["font"].render(f"{stat}: {value}", False, (0, 0, 0))
+        if stat in stat_colors.keys():
+            text = assets["font"].render(f"{stat}: {value}", False, stat_colors[stat])
+            position = (0, stat_position_y * SCREEN_SIZE[1] // 30)
+            screen.blit(text, position)
+            return
+
+        text = assets["font"].render(f"{stat}: {value}", False, defaul_stat_color)
         position = (0, stat_position_y * SCREEN_SIZE[1] // 30)
         screen.blit(text, position)
         stat_position_y += 1
@@ -94,6 +105,6 @@ while True:
 
     screen.fill((0, 0, 0))
     tile.draw_grid(grid, screen, assets, TILE_SIZE, cursor_position=tile_cursor.position)
-    draw_stats(stats, assets)
+    draw_stats(stats, assets, STAT_DRAW_COLORS)
 
     pygame.display.flip()
