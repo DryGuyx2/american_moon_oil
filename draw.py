@@ -1,4 +1,9 @@
-def draw_grid(grid, screen, assets, tile_size, cursor_position=None):
+def draw_tilegrid(grid, screen, assets, tile_size, cursor_position=None):
+    draw_order = build_tile_draw_order(grid, screen, assets, tile_size, cursor_position)
+    draw_tiles_from_order(draw_order, screen)
+
+
+def build_tile_draw_order(grid, screen, assets, tile_size, cursor_position):
     # Draw order is a nested list structure where
     # every sub-list contains a tile image,
     # with a screen position
@@ -7,7 +12,7 @@ def draw_grid(grid, screen, assets, tile_size, cursor_position=None):
     draw_order = []
 
     # Here we set up the layers, and tiles
-    for row_index, row in enumerate(grid.grid):
+    for row_index, row in enumerate(grid):
         for tile_index, tile in enumerate(row):
             screen_position = (tile.position[0] * tile_size[0], tile.position[1] * tile_size[1])
             for layer_index, layer in enumerate(tile.layers):
@@ -19,11 +24,13 @@ def draw_grid(grid, screen, assets, tile_size, cursor_position=None):
                 draw_order[layer_index].append((assets[layer], screen_position))
             # After setting up all the tiles, we finally place the cursor at the top of its position
             if cursor_position == (row_index, tile_index):
-                top_layer = len(grid.grid[row_index][tile_index].layers) - 1
+                top_layer = len(grid[row_index][tile_index].layers) - 1
                 draw_order[top_layer].append((assets["cursor"], screen_position))
 
-    # Here we draw the tiles
-    for layer in draw_order:
+    return draw_order
+
+def draw_tiles_from_order(order, screen):
+    for layer in order:
         for tile in layer:
             screen.blit(tile[0], tile[1])
 

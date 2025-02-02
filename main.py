@@ -99,7 +99,7 @@ while True:
     handle_events(STRUCTURE_MAP)
 
     screen.fill((0, 0, 0))
-    draw.draw_grid(grid, screen, assets, TILE_SIZE, cursor_position=tile_cursor.position)
+    draw.draw_tilegrid(grid.grid, screen, assets, TILE_SIZE, cursor_position=tile_cursor.position)
     draw.draw_stats(screen, stats, assets, SCREEN_SIZE, STAT_DRAW_COLORS)
 
     pygame.display.flip()
