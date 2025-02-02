@@ -5,6 +5,7 @@ import pygame
 # import utils
 import tile
 import cursor
+import structure
 
 # Configure grid, and screen size
 # Tile sizes are automatically scaled accordingly
@@ -79,13 +80,13 @@ def handle_events(structure_map):
             sys.exit()
 
         if event.type == PRODUCTION_UPDATE_EVENT:
-            tile.process_structures(grid, stats, structure_map)
+            structure.process_structures(grid, stats, structure_map)
             print(f"Stats: {stats}")
 
         selected_tile = grid.grid[tile_cursor.position[0]][tile_cursor.position[1]]
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_c:
-                tile.build_structure(stats, "oil_pump", selected_tile, structure_map)
+                structure.build_structure(stats, "oil_pump", selected_tile, structure_map)
 
             cursor.move_cursor(event, tile_cursor, grid)
             print(f"Cursor: {tile_cursor}")
