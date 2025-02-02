@@ -22,6 +22,7 @@ pygame.init()
 assets = {
     "moon_floor": pygame.image.load("assets/moon_floor.png"),
     "oil_pump": pygame.image.load("assets/oil_pump.png"),
+    "rocket": pygame.image.load("assets/rocket.png"),
     "cursor": pygame.image.load("assets/cursor.png"),
     "font": pygame.font.Font("assets/nintendo-nes-font.ttf", 32),
 }
