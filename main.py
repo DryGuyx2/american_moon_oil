@@ -27,15 +27,18 @@ assets = {
     "font": pygame.font.Font("assets/nintendo-nes-font.ttf", 32),
 }
 
-# Specify tile images to be scaled to the same size
-tile_sprites = [
-    "moon_floor",
-    "oil_pump",
-]
+# Specify tile images to be scaled to the correct size
+tile_sprites = {
+    "moon_floor": (1, 1),
+    "oil_pump": (1, 1),
+    "rocket": (1, 2),
+}
 
 # Scale all the tile images
-for tile_sprite in tile_sprites:
-    assets[tile_sprite] = pygame.transform.scale(assets[tile_sprite], TILE_IMAGE_SIZE)
+for tile_sprite, size in tile_sprites.items():
+    scaled_size = (size[0] * TILE_IMAGE_SIZE[0], size[1] * TILE_IMAGE_SIZE[1])
+    print(f"Scaled size: {scaled_size}")
+    assets[tile_sprite] = pygame.transform.scale(assets[tile_sprite], scaled_size)
 
 STRUCTURE_MAP = {
     "oil_pump": {"product": "oil", "amount": 3, "build_resources": {"money": 50}},
@@ -53,7 +56,10 @@ STAT_DRAW_COLORS = {
 # Initialize grid with moon floor tile sprite as bottom layer
 grid = tile.TileGrid(GRID_SIZE)
 tile.fill_grid(grid, "moon_floor")
-grid.grid[0][0].layers.append("oil_pump")
+
+center_tile = grid.grid[len(grid.grid) // 2][len(grid.grid[0]) // 2]
+print(f"Center tile: {center_tile}")
+center_tile.layers.append("rocket")
 #print(f"Grid:\n{grid}")
 
 # Initialize cursor
