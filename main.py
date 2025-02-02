@@ -6,6 +6,7 @@ import pygame
 import tile
 import cursor
 import structure
+import draw
 
 # Configure grid, and screen size
 # Tile sizes are automatically scaled accordingly
@@ -91,20 +92,6 @@ def handle_events(structure_map):
             cursor.move_cursor(event, tile_cursor, grid)
             print(f"Cursor: {tile_cursor}")
 
-def draw_stats(stats, assets, stat_colors, defaul_stat_color=(255, 255, 255)):
-    stat_position_y = 0
-    for stat, value in stats.items():
-        if stat in stat_colors.keys():
-            text = assets["font"].render(f"{stat}: {value}", False, stat_colors[stat])
-            position = (0, stat_position_y * SCREEN_SIZE[1] // 30)
-            screen.blit(text, position)
-            return
-
-        text = assets["font"].render(f"{stat}: {value}", False, defaul_stat_color)
-        position = (0, stat_position_y * SCREEN_SIZE[1] // 30)
-        screen.blit(text, position)
-        stat_position_y += 1
-
 PRODUCTION_UPDATE_EVENT = pygame.USEREVENT + 1
 pygame.time.set_timer(PRODUCTION_UPDATE_EVENT, PRODUCTION_TIME * 1000)
 
@@ -112,7 +99,7 @@ while True:
     handle_events(STRUCTURE_MAP)
 
     screen.fill((0, 0, 0))
-    tile.draw_grid(grid, screen, assets, TILE_SIZE, cursor_position=tile_cursor.position)
-    draw_stats(stats, assets, STAT_DRAW_COLORS)
+    draw.draw_grid(grid, screen, assets, TILE_SIZE, cursor_position=tile_cursor.position)
+    draw.draw_stats(screen, stats, assets, SCREEN_SIZE, STAT_DRAW_COLORS)
 
     pygame.display.flip()
