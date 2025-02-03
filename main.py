@@ -42,12 +42,13 @@ for tile_sprite, size in tile_sprites.items():
     assets[tile_sprite] = pygame.transform.scale(assets[tile_sprite], scaled_size)
 
 STRUCTURE_MAP = {
-    "oil_pump": {"product": "oil", "amount": 3, "build_resources": {"money": 50}, "buildable": True},
-    "rocket": {"product": "money", "amount": 50, "buildable": False},
+    "oil_pump": structure.Structure("oil_pump", [("oil", 50)], [("money", 50)]),
+    "rocket": structure.Structure("rocket", [("money", 50)], []),
 }
 
 stats = {
     "money": 500,
+    "oil": 0,
 }
 
 STAT_DRAW_COLORS = {
