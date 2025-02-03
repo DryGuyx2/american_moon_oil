@@ -1,6 +1,7 @@
 def build_structure(stats, structure_name, tile, structure_map):
-    if structure_name in tile.layers:
-        return
+    for layer in tile.layers:
+        if layer in structure_map.keys():
+            return
 
     for build_resource, amount in structure_map[structure_name]["build_resources"].items():
         if not build_resource in stats.keys():
