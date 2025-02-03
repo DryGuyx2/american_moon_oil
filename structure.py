@@ -1,3 +1,26 @@
+class Structure:
+    def __init__(self, name, product, usage, build_resources):
+        self._name = name
+        self._product = product
+        self._usage = usage
+        self._build_resources = build_resources
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def product(self):
+        return self._product
+
+    @property
+    def usage(self):
+        return self._usage
+
+    @property
+    def build_resources(self):
+        return self._usage
+
 def build_structure(stats, structure_name, tile, structure_map):
     for layer in tile.layers:
         if layer in structure_map.keys():
