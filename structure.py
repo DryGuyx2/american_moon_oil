@@ -46,10 +46,13 @@ def process_structures(grid, stats, structure_map):
                 if not layer in structure_map.keys():
                     continue
 
-                for product, amount in structure_map[layer].products:
-                    if product in stats.keys():
-                        print(f"{product} in stats, with amount {amount}")
-                        stats[product] += amount
-                        continue
+                add_resource_gain(structure_map[layer], stats)
 
-                    stats[product] = amount
+def add_resource_gain(structure, stats):
+    for product, amount in structure.products:
+        if product in stats.keys():
+            stats[product] += amount
+            continue
+
+        stats[product] = amount
+
