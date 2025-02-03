@@ -39,7 +39,6 @@ tile_sprites = {
 # Scale all the tile images
 for tile_sprite, size in tile_sprites.items():
     scaled_size = (size[0] * TILE_IMAGE_SIZE[0], size[1] * TILE_IMAGE_SIZE[1])
-    print(f"Scaled size: {scaled_size}")
     assets[tile_sprite] = pygame.transform.scale(assets[tile_sprite], scaled_size)
 
 STRUCTURE_MAP = {
@@ -60,7 +59,6 @@ grid = tile.TileGrid(GRID_SIZE)
 tile.fill_grid(grid, "moon_floor")
 
 center_tile = grid.grid[len(grid.grid) // 2][len(grid.grid[0]) // 2]
-print(f"Center tile: {center_tile}")
 center_tile.layers.append("rocket")
 #print(f"Grid:\n{grid}")
 

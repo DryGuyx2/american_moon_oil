@@ -17,6 +17,14 @@ def build_tile_draw_order(grid, screen, assets, tile_size, cursor_position):
             screen_position = (tile.position[0] * tile_size[0], tile.position[1] * tile_size[1])
             for layer_index, layer in enumerate(tile.layers):
 
+                # For some reason there is one too few draw
+                # layers added at the top-left corner of the grid,
+                # so we just add a layer at that position.
+                # This is most likely a bad way to handle the edge case,
+                # but i dont have the energy, nor time to handle this now
+                if (row_index, tile_index) == (0, 0):
+                    draw_order.append([])
+
                 if layer_index == 0:
                     draw_order.append([])
 
