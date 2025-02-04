@@ -1,5 +1,5 @@
 class Structure:
-    def __init__(self, name, products, build_resources, consumption=None):
+    def __init__(self, name, products, build_resources, consumption):
         self._name = name
         self._products = products
         self._consumption = consumption
@@ -46,9 +46,25 @@ def process_structures(grid, stats, structure_map):
                 if not layer in structure_map.keys():
                     continue
 
-                add_resource_gain(structure_map[layer], stats)
+                structure = structure_map[layer]
+                can_produce = True
 
-def add_resource_gain(structure, stats):
+                for product, amount in structure.consumption:
+                    if not product in stats.keys():
+                        can_produce = False
+                        break
+
+                    if not stats[product] >= amount:
+                        can_produce = False
+                        break
+
+                if can_produce:
+                    apply_resource_usage(structure, stats)
+                    apply_resource_gain(structure, stats)
+                
+                
+
+def apply_resource_gain(structure, stats):
     for product, amount in structure.products:
         if product in stats.keys():
             stats[product] += amount
@@ -56,3 +72,7 @@ def add_resource_gain(structure, stats):
 
         stats[product] = amount
 
+def apply_resource_usage(structure, stats):
+    for product, amount in structure.consumption:
+        if product in stats.keys():
+            stats[product] -= amount
