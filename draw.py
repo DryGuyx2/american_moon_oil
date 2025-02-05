@@ -46,13 +46,13 @@ def draw_stats(screen, stats, assets, screen_size, stat_colors, defaul_stat_colo
     stat_position_y = 0
     for stat, value in stats.items():
         if stat in stat_colors.keys():
-            text = assets["font"].render(f"{stat}: {value}", False, stat_colors[stat])
+            text = assets["font"].render(f"{stat.capitalize()}: {value}", False, stat_colors[stat])
             position = (0, stat_position_y * screen_size[1] // 15)
             screen.blit(text, position)
             stat_position_y += 1
             continue
 
         text = assets["font"].render(f"{stat}: {value}", False, defaul_stat_color)
-        position = (0, stat_position_y * screen_size[1] // 30)
+        position = (0, stat_position_y * screen_size[1] // 15)
         screen.blit(text, position)
         stat_position_y += 1

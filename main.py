@@ -14,6 +14,7 @@ SCREEN_SIZE = (640, 640)
 GRID_SIZE = (5, 5)
 TILE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
 TILE_IMAGE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
+TEXT_SIZE = 28
 
 PRODUCTION_TIME = 2
 FRAMERATE = 60
@@ -26,7 +27,7 @@ assets = {
     "oil_pump": pygame.image.load("assets/oil_pump.png"),
     "rocket": pygame.image.load("assets/rocket.png"),
     "cursor": pygame.image.load("assets/cursor.png"),
-    "font": pygame.font.Font("assets/nintendo-nes-font.ttf", 32),
+    "font": pygame.font.Font("assets/nintendo-nes-font.ttf", TEXT_SIZE),
 }
 
 # Specify tile images to be scaled to the correct size
@@ -42,17 +43,17 @@ for tile_sprite, size in tile_sprites.items():
     assets[tile_sprite] = pygame.transform.scale(assets[tile_sprite], scaled_size)
 
 STRUCTURE_MAP = {
-    "oil_pump": structure.Structure(name="oil_pump", products=[("oil", 50)], build_resources=[("money", 50)], consumption=[]),
-    "rocket": structure.Structure(name="rocket", products=[("money", 50)], build_resources=[], consumption=[("oil", 50)]),
+    "oil_pump": structure.Structure(name="oil_pump", products=[("oil", 50)], build_resources=[("funds", 50)], consumption=[]),
+    "rocket": structure.Structure(name="rocket", products=[("funds", 50)], build_resources=[], consumption=[("oil", 50)]),
 }
 
 stats = {
-    "money": 500,
+    "funds": 500,
     "oil": 0,
 }
 
 STAT_DRAW_COLORS = {
-    "money": (0, 184, 0),
+    "funds": (0, 184, 0),
     "oil": (0, 0, 0),
 }
 
