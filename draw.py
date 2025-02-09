@@ -29,11 +29,15 @@ def build_tile_draw_order(grid, screen, assets, tile_size, cursor_position):
                     draw_order.append([])
 
                 # Here we add the tile to the correct layer index in the draw order list
-                draw_order[layer_index].append((assets[layer], screen_position))
+                if assets[layer]["type"] == "image":
+                    draw_order[layer_index].append((assets[layer]["surface"], screen_position))
+                elif assets[layer]["type"] == "animation":
+                    draw_order[layer_index].append((assets[layer]["surface"].blit_ready(), screen_position))
+
             # After setting up all the tiles, we finally place the cursor at the top of its position
             if cursor_position == (row_index, tile_index):
                 top_layer = len(grid[row_index][tile_index].layers) - 1
-                draw_order[top_layer].append((assets["cursor"], screen_position))
+                draw_order[top_layer].append((assets["cursor"]["surface"], screen_position))
 
     return draw_order
 

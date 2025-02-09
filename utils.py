@@ -1,6 +1,8 @@
 from pathlib import Path
 
 import pygame
+from gif_pygame import transform
+
 
 def scale_number(number, old_range, new_range):
     # First we shift the range of the old range
@@ -12,7 +14,7 @@ def scale_number(number, old_range, new_range):
 
     # Then we shift the number to be zero in the range
     shifted_number = number - old_range[0]
-    
+
     # The number then gets normalized (put in a range between 0, and 1)
     normalized_number = shifted_number / old_range_width
 
@@ -23,6 +25,19 @@ def scale_number(number, old_range, new_range):
     # Then we finally move the the scaled number,
     # to its position in the range
     return new_range[0] + scaled_number
+
+def scale_sprite(sprite, size_tiles, tile_size):
+    if sprite["type"] == "image":
+        scaled_size = (size_tiles[0] * tile_size[0], size_tiles[1] * tile_size[1])
+        sprite["surface"] = scale_surface(sprite["surface"], scaled_size)
+
+    if sprite["type"] == "animation":
+        scaled_size = (size_tiles[0] * tile_size[0], size_tiles[1] * tile_size[1])
+        transform.scale(sprite["surface"], scaled_size)
+
+def scale_surface(surface, size):
+    return pygame.transform.scale(surface, size)
+
 
 def load_assets(raw_asset_path):
     asset_path = Path(raw_asset_path)

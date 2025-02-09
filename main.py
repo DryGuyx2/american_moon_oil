@@ -1,8 +1,9 @@
 import sys
 
 import pygame
+import gif_pygame
 
-# import utils
+import utils
 import tile
 import cursor
 import structure
@@ -12,8 +13,10 @@ import draw
 # Tile sizes are automatically scaled accordingly
 SCREEN_SIZE = (640, 640)
 GRID_SIZE = (5, 5)
+
 TILE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
 TILE_IMAGE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
+
 TEXT_SIZE = 28
 
 PRODUCTION_TIME = 2
@@ -23,10 +26,10 @@ pygame.init()
 
 # Load assets
 assets = {
-    "moon_floor": pygame.image.load("assets/moon_floor.png"),
-    "oil_pump": pygame.image.load("assets/oil_pump.png"),
-    "rocket": pygame.image.load("assets/rocket.png"),
-    "cursor": pygame.image.load("assets/cursor.png"),
+    "moon_floor": {"surface": pygame.image.load("assets/moon_floor.png"), "type": "image"},
+    "rocket": {"surface": pygame.image.load("assets/rocket.png"), "type": "image"},
+    "cursor": {"surface": pygame.image.load("assets/cursor.png"), "type": "image"},
+    "oil_pump": {"surface": gif_pygame.load("assets/oil_pump.gif"), "type": "animation"},
     "font": pygame.font.Font("assets/nintendo-nes-font.ttf", TEXT_SIZE),
 }
 
@@ -39,18 +42,21 @@ tile_sprites = {
 
 # Scale all the tile images
 for tile_sprite, size in tile_sprites.items():
-    scaled_size = (size[0] * TILE_IMAGE_SIZE[0], size[1] * TILE_IMAGE_SIZE[1])
-    assets[tile_sprite] = pygame.transform.scale(assets[tile_sprite], scaled_size)
+    utils.scale_sprite(assets[tile_sprite], size, TILE_IMAGE_SIZE)
 
 STRUCTURE_MAP = {
-    "oil_pump": structure.Structure(name="oil_pump",
-                                    products=[("oil", 50)],
-                                    build_resources=[("funds", 50)],
-                                    consumption=[]),
-    "rocket": structure.Structure(name="rocket",
-                                  products=[("funds", 50)],
-                                  build_resources=[],
-                                  consumption=[("oil", 50)]),
+    "oil_pump": structure.Structure(
+        name="oil_pump",
+        products=[("oil", 50)],
+        build_resources=[("funds", 50)],
+        consumption=[]
+        ),
+    "rocket": structure.Structure(
+        name="rocket",
+        products=[("funds", 50)],
+        build_resources=[],
+        consumption=[("oil", 50)]
+        ),
 }
 
 stats = {
