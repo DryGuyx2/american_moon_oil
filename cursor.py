@@ -40,6 +40,8 @@ def is_touching_edge(position, grid_size, edge):
     raise NameError("Invalid edge name")
 
 def move_cursor(event, cursor, grid):
+    if event.type != pygame.KEYDOWN:
+        return
     max_cursor_tile_height = len(grid.grid[cursor.position[0]][cursor.position[1]].layers) - 1
 
     if event.key == pygame.K_RETURN:
