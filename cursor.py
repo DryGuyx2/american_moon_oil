@@ -1,5 +1,7 @@
 import pygame
 
+import utils
+
 class Cursor:
     def __init__(self, grid_size):
         self._position = (0, 0)
@@ -59,3 +61,8 @@ def move_cursor(event, cursor, grid):
         cursor.position = (cursor.position[0], cursor.position[1] + 1)
 
     cursor.height = len(grid.grid[cursor.position[0]][cursor.position[1]].layers) - 1
+
+def to_grid_position(screen_position, screen_size, grid_size):
+    x = utils.scale_number(screen_position[0], (0, screen_size[0]), (0, grid_size[0]))
+    y = utils.scale_number(screen_position[1], (0, screen_size[1]), (0, grid_size[1]))
+    return (int(round(x, 0)), int(round(y, 0)))

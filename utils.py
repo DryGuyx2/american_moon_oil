@@ -2,6 +2,27 @@ from pathlib import Path
 
 import pygame
 
+def scale_number(number, old_range, new_range):
+    # First we shift the range of the old range
+    old_range_width = old_range[1] - old_range[0]
+
+    # If the width of the old range is 0, we raise an error
+    if old_range_width == 0:
+        raise ValueError("Size of old range must be larger than zero")
+
+    # Then we shift the number to be zero in the range
+    shifted_number = number - old_range[0]
+    
+    # The number then gets normalized (put in a range between 0, and 1)
+    normalized_number = shifted_number / old_range_width
+
+    # Then we multiply it by the width of the new range
+    new_range_width = new_range[1] - new_range[0]
+    scaled_number = normalized_number * new_range_width
+
+    # Then we finally move the the scaled number,
+    # to its position in the range
+    return new_range[0] + scaled_number
 
 def load_assets(raw_asset_path):
     asset_path = Path(raw_asset_path)

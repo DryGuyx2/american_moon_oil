@@ -43,8 +43,14 @@ for tile_sprite, size in tile_sprites.items():
     assets[tile_sprite] = pygame.transform.scale(assets[tile_sprite], scaled_size)
 
 STRUCTURE_MAP = {
-    "oil_pump": structure.Structure(name="oil_pump", products=[("oil", 50)], build_resources=[("funds", 50)], consumption=[]),
-    "rocket": structure.Structure(name="rocket", products=[("funds", 50)], build_resources=[], consumption=[("oil", 50)]),
+    "oil_pump": structure.Structure(name="oil_pump",
+                                    products=[("oil", 50)],
+                                    build_resources=[("funds", 50)],
+                                    consumption=[]),
+    "rocket": structure.Structure(name="rocket",
+                                  products=[("funds", 50)],
+                                  build_resources=[],
+                                  consumption=[("oil", 50)]),
 }
 
 stats = {
@@ -80,6 +86,11 @@ def handle_events(structure_map):
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+        if event.type == pygame.MOUSEMOTION:
+            grid_size = (len(grid.grid) - 1, len(grid.grid[0]) - 1)
+            screen_position = pygame.mouse.get_pos()
+            tile_cursor.position = cursor.to_grid_position(screen_position, SCREEN_SIZE, grid_size)
 
         if event.type == PRODUCTION_UPDATE_EVENT:
             structure.process_structures(grid, stats, structure_map)
