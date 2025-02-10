@@ -26,7 +26,7 @@ def scale_number(number, old_range, new_range):
     # to its position in the range
     return new_range[0] + scaled_number
 
-def scale_sprite(sprite, size_tiles, tile_size):
+def scale_tile_sprite(sprite, size_tiles, tile_size):
     if sprite["type"] == "image":
         scaled_size = (size_tiles[0] * tile_size[0], size_tiles[1] * tile_size[1])
         sprite["surface"] = pygame.transform.scale(sprite["surface"], scaled_size)

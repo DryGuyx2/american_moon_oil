@@ -1,9 +1,10 @@
 class Structure:
-    def __init__(self, name, products, build_resources, consumption):
+    def __init__(self, name, products, build_resources, consumption, buildable=True):
         self._name = name
         self._products = products
         self._consumption = consumption
         self._build_resources = build_resources
+        self._buildable = buildable
 
     @property
     def name(self):
@@ -20,6 +21,10 @@ class Structure:
     @property
     def build_resources(self):
         return self._build_resources
+
+    @property
+    def buildable(self):
+        return self._buildable
 
 def build_structure(stats, structure_name, tile, structure_map):
     for layer in tile.layers:

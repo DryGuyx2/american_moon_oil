@@ -76,7 +76,7 @@ class StructureSelection:
         self._position = initial_position
     
     def __repr__(self):
-        return str(self.position)
+        return f"{self.position}:{self.selection}"
 
     @property
     def selection(self):

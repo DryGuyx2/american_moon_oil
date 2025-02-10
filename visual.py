@@ -62,3 +62,14 @@ def draw_stats(screen, stats, assets, screen_size, stat_colors, defaul_stat_colo
         position = (0, stat_position_y * screen_size[1] // 15)
         screen.blit(text, position)
         stat_position_y += 1
+
+def draw_structure_selection(selection, bar_position, screen, assets):
+    screen.blit(assets["selection_bar"], bar_position)
+
+    x_offset = -5
+    y_offset = 33
+    structure_spacing = 10
+    y_position = bar_position[1] + y_offset
+    for index, structure in enumerate(selection.selection):
+        x_position = bar_position[0] + structure_spacing * index + x_offset
+        screen.blit(assets["selection"][structure]["surface"], (x_position, y_position))

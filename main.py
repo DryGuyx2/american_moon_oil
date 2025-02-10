@@ -7,7 +7,7 @@ import utils
 import tile
 import selection
 import structure
-import draw
+import visual
 
 # Configure grid, and screen size
 # Tile sizes are automatically scaled accordingly
@@ -16,6 +16,11 @@ GRID_SIZE = (5, 5)
 
 TILE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
 TILE_IMAGE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
+
+STRUCTURE_SELECTION_BAR_POSITION = (SCREEN_SIZE[0] // 2 - SCREEN_SIZE[0] // 8, SCREEN_SIZE[1] - SCREEN_SIZE[1] // 6)
+SELECTION_BAR_SIZE = (SCREEN_SIZE[0] // 4, SCREEN_SIZE[1] // 8)
+SELECTION_ICON_SIZE = (SELECTION_BAR_SIZE[0] // 2, SELECTION_BAR_SIZE[1] // 2)
+SELECTION_FRAME_SIZE = (SELECTION_ICON_SIZE[0] + 1, SELECTION_ICON_SIZE[1] + 1)
 
 TEXT_SIZE = 28
 
@@ -31,6 +36,12 @@ assets = {
     "cursor": {"surface": pygame.image.load("assets/cursor.png"), "type": "image"},
     "oil_pump": {"surface": gif_pygame.load("assets/oil_pump.gif"), "type": "animation"},
     "font": pygame.font.Font("assets/nintendo-nes-font.ttf", TEXT_SIZE),
+    "selection_frame": {"surface": pygame.image.load("assets/selection_frame.png"), "type": "image"},
+    "selection_bar": {"surface": pygame.image.load("assets/selection_bar.png"), "type": "image"},
+    "selection": {
+        "oil_pump": {"surface": pygame.image.load("assets/oil_pump_selection.png"), "type": "image"},
+        "oil_container": {"surface": pygame.image.load("assets/oil_container_selection.png"), "type": "image"},
+    },
 }
 
 # Specify tile images to be scaled to the correct size
@@ -42,20 +53,30 @@ tile_sprites = {
 
 # Scale all the tile images
 for tile_sprite, size in tile_sprites.items():
-    utils.scale_sprite(assets[tile_sprite], size, TILE_IMAGE_SIZE)
+    utils.scale_tile_sprite(assets[tile_sprite], size, TILE_IMAGE_SIZE)
+
+
+# Scale selection items
+assets["selection_bar"] = pygame.transform.scale(assets["selection_bar"]["surface"], SELECTION_BAR_SIZE)
+assets["selection_frame"] = pygame.transform.scale(assets["selection_frame"]["surface"], SELECTION_FRAME_SIZE)
+
+for selection_icon in assets["selection"].keys():
+    surface = assets["selection"][selection_icon]["surface"]
+    assets["selection"][selection_icon]["surface"] = pygame.transform.scale(surface, SELECTION_ICON_SIZE)
 
 STRUCTURE_MAP = {
     "oil_pump": structure.Structure(
         name="oil_pump",
         products=[("oil", 50)],
         build_resources=[("funds", 50)],
-        consumption=[]
+        consumption=[],
         ),
     "rocket": structure.Structure(
         name="rocket",
         products=[("funds", 50)],
         build_resources=[],
-        consumption=[("oil", 50)]
+        consumption=[("oil", 50)],
+        buildable=False,
         ),
 }
 
@@ -79,7 +100,10 @@ center_tile.layers.append("rocket")
 
 # Initialize cursor
 tile_cursor = selection.Cursor(GRID_SIZE)
-structure_selection = selection.StructureSelection(STRUCTURE_MAP.keys())
+
+# Initialize structure selection
+buildable_structures = [name for name, structure in STRUCTURE_MAP.items() if structure.buildable]
+structure_selection = selection.StructureSelection(buildable_structures)
 
 # Set up pygame
 
@@ -131,7 +155,8 @@ while True:
     handle_events(STRUCTURE_MAP)
 
     screen.fill((0, 0, 0))
-    draw.draw_tilegrid(grid.grid, screen, assets, TILE_SIZE, cursor_position=tile_cursor.position)
-    draw.draw_stats(screen, stats, assets, SCREEN_SIZE, STAT_DRAW_COLORS)
+    visual.draw_tilegrid(grid.grid, screen, assets, TILE_SIZE, cursor_position=tile_cursor.position)
+    visual.draw_stats(screen, stats, assets, SCREEN_SIZE, STAT_DRAW_COLORS)
+    visual.draw_structure_selection(structure_selection, STRUCTURE_SELECTION_BAR_POSITION, screen, assets)
 
     pygame.display.flip()
