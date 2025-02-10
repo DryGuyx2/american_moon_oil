@@ -5,7 +5,7 @@ import gif_pygame
 
 import utils
 import tile
-import cursor
+import selection
 import structure
 import draw
 
@@ -78,7 +78,8 @@ center_tile.layers.append("rocket")
 #print(f"Grid:\n{grid}")
 
 # Initialize cursor
-tile_cursor = cursor.Cursor(GRID_SIZE)
+tile_cursor = selection.Cursor(GRID_SIZE)
+structure_selection = selection.StructureSelection(STRUCTURE_MAP.keys())
 
 # Set up pygame
 
@@ -96,7 +97,7 @@ def handle_events(structure_map):
         if event.type == pygame.MOUSEMOTION:
             grid_size = (len(grid.grid) - 1, len(grid.grid[0]) - 1)
             screen_position = pygame.mouse.get_pos()
-            tile_cursor.position = cursor.to_grid_position(screen_position, SCREEN_SIZE, grid_size)
+            tile_cursor.position = selection.to_grid_position(screen_position, SCREEN_SIZE, grid_size)
 
         selected_tile = grid.grid[tile_cursor.position[0]][tile_cursor.position[1]]
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -106,12 +107,21 @@ def handle_events(structure_map):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_c:
                 structure.build_structure(stats, "oil_pump", selected_tile, structure_map)
+                return
+
+            if event.key == pygame.K_RIGHT:
+                selection.move_selection_position(structure_selection, 1)
+                print(f"Selection: {structure_selection}")
+                return
+
+            if event.key == pygame.K_LEFT:
+                selection.move_selection_position(structure_selection, -1)
+                print(f"Selection: {structure_selection}")
+                return
 
         if event.type == PRODUCTION_UPDATE_EVENT:
             structure.process_structures(grid, stats, structure_map)
             #print(f"Stats: {stats}")
-
-        cursor.move_cursor(event, tile_cursor, grid)
         #print(f"Cursor: {tile_cursor}")
 
 PRODUCTION_UPDATE_EVENT = pygame.USEREVENT + 1

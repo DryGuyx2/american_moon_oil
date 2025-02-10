@@ -68,3 +68,33 @@ def to_grid_position(screen_position, screen_size, grid_size):
     x = utils.scale_number(screen_position[0], (0, screen_size[0]), (0, grid_size[0]))
     y = utils.scale_number(screen_position[1], (0, screen_size[1]), (0, grid_size[1]))
     return (int(round(x, 0)), int(round(y, 0)))
+
+
+class StructureSelection:
+    def __init__(self, selection, initial_position=0):
+        self._selection = selection
+        self._position = initial_position
+    
+    def __repr__(self):
+        return str(self.position)
+
+    @property
+    def selection(self):
+        return self._selection
+
+    @property
+    def position(self):
+        return self._position
+
+    @position.setter
+    def position(self, new_position):
+        self._position = new_position
+
+def move_selection_position(selection, amount):
+    if selection.position + amount <= 0:
+        selection.position = 0
+        return
+
+    if selection.position + amount >= len(selection.selection) - 1:
+        selection.position = len(selection.selection) - 1
+        return
