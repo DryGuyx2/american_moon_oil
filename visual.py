@@ -48,23 +48,24 @@ def draw_tiles_from_order(order, screen):
         for tile in layer:
             screen.blit(tile[0], tile[1])
 
-def draw_stats(screen, stats, assets, screen_size, stat_colors, defaul_stat_color=(255, 255, 255)):
-    stat_position_y = 0
-    for stat, value in stats.items():
-        if stat in stat_colors.keys():
-            text = assets["font"].render(f"{stat.capitalize()}: {value}", False, stat_colors[stat])
-            position = (0, stat_position_y * screen_size[1] // 15)
-            screen.blit(text, position)
-            stat_position_y += 1
-            continue
+def draw_stats(screen, stats, assets, display_position, screen_size, stat_colors, defaul_stat_color=(255, 255, 255)):
+    screen.blit(assets["stat_display"]["surface"], display_position)
 
-        text = assets["font"].render(f"{stat}: {value}", False, defaul_stat_color)
-        position = (0, stat_position_y * screen_size[1] // 15)
-        screen.blit(text, position)
+    y_offset = display_position[1] * 12
+    stat_position_y = 0
+
+    for stat, value in stats.items():
+        color = stat_colors[stat] if stat in stat_colors.keys() else defaul_stat_color
+        text = assets["font"].render(f"{stat}: {value}", False, color)
+
+        x_position = display_position[0] * 9
+        y_position = stat_position_y * display_position[1] * 12 + y_offset
         stat_position_y += 1
 
+        screen.blit(text, (x_position, y_position))
+
 def draw_structure_selection(selection, bar_position, screen, assets):
-    screen.blit(assets["selection_bar"], bar_position)
+    screen.blit(assets["selection_bar"]["surface"], bar_position)
 
     x_offset = bar_position[0] // 11 - bar_position[0] // 100
     y_offset = bar_position[1] // 15
@@ -75,4 +76,4 @@ def draw_structure_selection(selection, bar_position, screen, assets):
         screen.blit(assets["selection"][structure]["surface"], (x_position, y_position))
 
         if index == selection.position:
-            screen.blit(assets["selection_frame"], (x_position, y_position))
+            screen.blit(assets["selection_frame"]["surface"], (x_position, y_position))

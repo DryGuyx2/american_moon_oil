@@ -66,8 +66,7 @@ def process_structures(grid, stats, structure_map):
                 if can_produce:
                     apply_resource_usage(structure, stats)
                     apply_resource_gain(structure, stats)
-                
-                
+
 
 def apply_resource_gain(structure, stats):
     for product, amount in structure.products:

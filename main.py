@@ -20,10 +20,10 @@ TILE_IMAGE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1
 STRUCTURE_SELECTION_BAR_POSITION = (SCREEN_SIZE[0] // 2 - SCREEN_SIZE[0] // 8, SCREEN_SIZE[1] - SCREEN_SIZE[1] // 6)
 SELECTION_BAR_SIZE = (SCREEN_SIZE[0] // 4, SCREEN_SIZE[1] // 8)
 SELECTION_ICON_SIZE = (SELECTION_BAR_SIZE[0] // 5, SELECTION_BAR_SIZE[0] // 5)
-# (28, 28)
 SELECTION_FRAME_SIZE = (SELECTION_ICON_SIZE[0] + 2, SELECTION_ICON_SIZE[1] + 2)
 
-TEXT_SIZE = 28
+STAT_DISPLAY_SIZE = (SCREEN_SIZE[1] // 2, SCREEN_SIZE[0] // 3)
+TEXT_SIZE = int((STAT_DISPLAY_SIZE[0] // 12 + STAT_DISPLAY_SIZE[1] // 8) // 2)
 
 PRODUCTION_TIME = 2
 FRAMERATE = 60
@@ -36,6 +36,7 @@ assets = {
     "rocket": {"surface": pygame.image.load("assets/rocket.png"), "type": "image"},
     "cursor": {"surface": pygame.image.load("assets/cursor.png"), "type": "image"},
     "oil_pump": {"surface": gif_pygame.load("assets/oil_pump.gif"), "type": "animation"},
+    "stat_display": {"surface": pygame.image.load("assets/stat_display.png"), "type": "image"},
     "font": pygame.font.Font("assets/nintendo-nes-font.ttf", TEXT_SIZE),
     "selection_frame": {"surface": pygame.image.load("assets/selection_frame.png"), "type": "image"},
     "selection_bar": {"surface": pygame.image.load("assets/selection_bar.png"), "type": "image"},
@@ -56,10 +57,12 @@ tile_sprites = {
 for tile_sprite, size in tile_sprites.items():
     utils.scale_tile_sprite(assets[tile_sprite], size, TILE_IMAGE_SIZE)
 
+# Scale stat display
+assets["stat_display"]["surface"] = pygame.transform.scale(assets["stat_display"]["surface"], STAT_DISPLAY_SIZE)
 
 # Scale selection items
-assets["selection_bar"] = pygame.transform.scale(assets["selection_bar"]["surface"], SELECTION_BAR_SIZE)
-assets["selection_frame"] = pygame.transform.scale(assets["selection_frame"]["surface"], SELECTION_FRAME_SIZE)
+assets["selection_bar"]["surface"] = pygame.transform.scale(assets["selection_bar"]["surface"], SELECTION_BAR_SIZE)
+assets["selection_frame"]["surface"] = pygame.transform.scale(assets["selection_frame"]["surface"], SELECTION_FRAME_SIZE)
 
 for selection_icon in assets["selection"].keys():
     surface = assets["selection"][selection_icon]["surface"]
@@ -158,7 +161,7 @@ while True:
 
     screen.fill((0, 0, 0))
     visual.draw_tilegrid(grid.grid, screen, assets, TILE_SIZE, cursor_position=tile_cursor.position)
-    visual.draw_stats(screen, stats, assets, SCREEN_SIZE, STAT_DRAW_COLORS)
+    visual.draw_stats(screen, stats, assets, (3, 3), SCREEN_SIZE, STAT_DRAW_COLORS)
     visual.draw_structure_selection(structure_selection, STRUCTURE_SELECTION_BAR_POSITION, screen, assets)
 
     pygame.display.flip()
