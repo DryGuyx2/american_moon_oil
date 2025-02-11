@@ -11,7 +11,7 @@ import visual
 
 # Configure grid, and screen size
 # Tile sizes are automatically scaled accordingly
-SCREEN_SIZE = (640, 640)
+SCREEN_SIZE = (640 * 1.5, 640 * 1.5)
 GRID_SIZE = (5, 5)
 
 TILE_SIZE = (SCREEN_SIZE[0] // GRID_SIZE[0], SCREEN_SIZE[1] // GRID_SIZE[1])
@@ -21,7 +21,7 @@ STRUCTURE_SELECTION_BAR_POSITION = (SCREEN_SIZE[0] // 2 - SCREEN_SIZE[0] // 8, S
 SELECTION_BAR_SIZE = (SCREEN_SIZE[0] // 4, SCREEN_SIZE[1] // 8)
 SELECTION_ICON_SIZE = (SELECTION_BAR_SIZE[0] // 5, SELECTION_BAR_SIZE[0] // 5)
 # (28, 28)
-SELECTION_FRAME_SIZE = (SELECTION_ICON_SIZE[0] + 1, SELECTION_ICON_SIZE[1] + 1)
+SELECTION_FRAME_SIZE = (SELECTION_ICON_SIZE[0] + 2, SELECTION_ICON_SIZE[1] + 2)
 
 TEXT_SIZE = 28
 
@@ -104,6 +104,7 @@ tile_cursor = selection.Cursor(GRID_SIZE)
 
 # Initialize structure selection
 buildable_structures = [name for name, structure in STRUCTURE_MAP.items() if structure.buildable]
+buildable_structures.append("oil_container")
 structure_selection = selection.StructureSelection(buildable_structures)
 
 # Set up pygame
