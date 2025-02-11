@@ -73,3 +73,6 @@ def draw_structure_selection(selection, bar_position, screen, assets):
     for index, structure in enumerate(selection.selection):
         x_position = bar_position[0] + icon_spacing * index + x_offset
         screen.blit(assets["selection"][structure]["surface"], (x_position, y_position))
+
+        if index == selection.position:
+            screen.blit(assets["selection_frame"], (x_position, y_position))
