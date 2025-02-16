@@ -20,12 +20,12 @@ TILE_SIZE = (32, 32)
 TILE_IMAGE_SIZE = TILE_SIZE
 
 STRUCTURE_SELECTION_BAR_POSITION = (140, 260)
-SELECTION_BAR_SIZE = (40, 20)
-SELECTION_ICON_SIZE = (7, 7)
-SELECTION_FRAME_SIZE = (9, 9)
+SELECTION_BAR_SIZE = (80, 40)
+SELECTION_ICON_SIZE = (14, 14)
+SELECTION_FRAME_SIZE = (20, 20)
 
-STAT_DISPLAY_SIZE = (60, 40)
-TEXT_SIZE = 14
+STAT_DISPLAY_SIZE = (144, 96)
+TEXT_SIZE = 12
 
 PRODUCTION_TIME = 2
 FRAMERATE = 60
@@ -166,7 +166,8 @@ while True:
     screen.fill((0, 0, 0))
     visual.draw_tilegrid(grid.grid, internal_surface, assets, TILE_SIZE, cursor_position=tile_cursor.position)
     visual.draw_stats(internal_surface, stats, assets, (3, 3), GAME_SIZE, STAT_DRAW_COLORS)
-    visual.draw_structure_selection(structure_selection, STRUCTURE_SELECTION_BAR_POSITION, internal_surface, assets)
+    structure_selection_surface = visual.render_structure_selection(structure_selection, assets)
+    internal_surface.blit(structure_selection_surface, STRUCTURE_SELECTION_BAR_POSITION)
 
-    screen.blit(pygame.transform.scale(internal_surface, (SCREEN_SIZE)))
+    screen.blit(pygame.transform.scale(internal_surface, SCREEN_SIZE), (0, 0))
     pygame.display.flip()
