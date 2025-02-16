@@ -1,11 +1,16 @@
 import pygame
 
-def draw_tilegrid(grid, screen, assets, tile_size, cursor_position=None):
-    draw_order = build_tile_draw_order(grid, screen, assets, tile_size, cursor_position)
-    draw_tiles_from_order(draw_order, screen)
+def render_tilegrid(grid, assets, tile_size, cursor_position=None):
+    grid_size = (tile_size[0] * len(grid), tile_size[1] * len(grid[0]))
+    grid_surface = pygame.Surface(grid_size)
+
+    draw_order = build_tile_draw_order(grid, assets, tile_size, cursor_position)
+    draw_tiles_from_order(draw_order, grid_surface)
+
+    return grid_surface
 
 
-def build_tile_draw_order(grid, screen, assets, tile_size, cursor_position):
+def build_tile_draw_order(grid, assets, tile_size, cursor_position):
     # Draw order is a nested list structure where
     # every sub-list contains a tile image,
     # with a screen position
@@ -50,21 +55,24 @@ def draw_tiles_from_order(order, screen):
         for tile in layer:
             screen.blit(tile[0], tile[1])
 
-def draw_stats(screen, stats, assets, display_position, screen_size, stat_colors, defaul_stat_color=(255, 255, 255)):
-    screen.blit(assets["stat_display"]["surface"], display_position)
+def draw_stats(stats, assets, stat_colors, default_stat_color=(255, 255, 255)):
+    stat_display = assets["stat_display"]["surface"].copy()
 
-    y_offset = display_position[1] * 4
-    stat_position_y = 0
+    y_offset = 15
+    x_offset = 10
+    stat_number = 0
 
     for stat, value in stats.items():
-        color = stat_colors[stat] if stat in stat_colors.keys() else defaul_stat_color
+        color = stat_colors[stat] if stat in stat_colors.keys() else default_stat_color
         text = assets["font"].render(f"{stat}: {value}", False, color)
 
-        x_position = display_position[0] * 4
-        y_position = stat_position_y * display_position[1] * 5 + y_offset
-        stat_position_y += 1
+        x_position = x_offset
+        y_position = stat_number * 3 * 5 + y_offset
+        stat_number += 1
 
-        screen.blit(text, (x_position, y_position))
+        stat_display.blit(text, (x_position, y_position))
+    
+    return stat_display
 
 def render_structure_selection(selection, assets):
     selection_bar = assets["selection_bar"]["surface"].copy()

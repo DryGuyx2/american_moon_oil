@@ -25,6 +25,7 @@ SELECTION_ICON_SIZE = (14, 14)
 SELECTION_FRAME_SIZE = (20, 20)
 
 STAT_DISPLAY_SIZE = (144, 96)
+STAT_DISPLAY_POSITION = (3, 3)
 TEXT_SIZE = 12
 
 PRODUCTION_TIME = 2
@@ -164,8 +165,12 @@ while True:
     handle_events(STRUCTURE_MAP)
 
     screen.fill((0, 0, 0))
-    visual.draw_tilegrid(grid.grid, internal_surface, assets, TILE_SIZE, cursor_position=tile_cursor.position)
-    visual.draw_stats(internal_surface, stats, assets, (3, 3), GAME_SIZE, STAT_DRAW_COLORS)
+    tilegrid_surface = visual.render_tilegrid(grid.grid, assets, TILE_SIZE, cursor_position=tile_cursor.position)
+    internal_surface.blit(tilegrid_surface, (0, 0))
+
+    stat_surface = visual.draw_stats(stats, assets, STAT_DRAW_COLORS)
+    internal_surface.blit(stat_surface, STAT_DISPLAY_POSITION)
+
     structure_selection_surface = visual.render_structure_selection(structure_selection, assets)
     internal_surface.blit(structure_selection_surface, STRUCTURE_SELECTION_BAR_POSITION)
 
