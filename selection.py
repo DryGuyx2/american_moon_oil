@@ -72,11 +72,16 @@ def to_grid_position(screen_position, screen_size, grid_size):
 
 class StructureSelection:
     def __init__(self, selection, initial_position=0):
+        self._selected = selection[initial_position]
         self._selection = selection
         self._position = initial_position
     
     def __repr__(self):
-        return f"{self.position}:{self.selection}"
+        return f"{self.position}:{self.selection}:{self.selected}"
+
+    @property
+    def selected(self):
+        return self._selected
 
     @property
     def selection(self):
@@ -89,6 +94,7 @@ class StructureSelection:
     @position.setter
     def position(self, new_position):
         self._position = new_position
+        self._selected = self.selection[self.position]
 
 def move_selection_position(selection, amount):
     if selection.position + amount <= 0:

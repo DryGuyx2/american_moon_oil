@@ -13,7 +13,7 @@ import visual
 # Tile sizes are automatically scaled accordingly
 GAME_SIZE = (320, 320)
 GRID_SIZE = (10, 10)
-SIZE_MULTIPLIER = 2
+SIZE_MULTIPLIER = 3
 SCREEN_SIZE = (GAME_SIZE[0] * SIZE_MULTIPLIER, GAME_SIZE[1] * SIZE_MULTIPLIER)
 
 TILE_SIZE = (32, 32)
@@ -39,6 +39,7 @@ assets = {
     "rocket": {"surface": pygame.image.load("assets/rocket.png"), "type": "image"},
     "cursor": {"surface": pygame.image.load("assets/cursor.png"), "type": "image"},
     "oil_pump": {"surface": gif_pygame.load("assets/oil_pump.gif"), "type": "animation"},
+    "oil_container": {"surface": pygame.image.load("assets/oil_container.png"), "type": "image"},
     "stat_display": {"surface": pygame.image.load("assets/stat_display.png"), "type": "image"},
     "font": pygame.font.Font("assets/nintendo-nes-font.ttf", TEXT_SIZE),
     "selection_frame": {"surface": pygame.image.load("assets/selection_frame.png"), "type": "image"},
@@ -53,6 +54,7 @@ assets = {
 tile_sprites = {
     "moon_floor": (1, 1),
     "oil_pump": (1, 1),
+    "oil_container": (1, 1),
     "rocket": (1, 2),
 }
 
@@ -85,6 +87,12 @@ STRUCTURE_MAP = {
         consumption=[("oil", 50)],
         buildable=False,
         ),
+    "oil_container": structure.Structure(
+        name="oil_container",
+        products=[("funds", 50)],
+        build_resources=[("funds", 50)],
+        consumption=[("oil", 50)],
+    ),
 }
 
 stats = {
@@ -103,14 +111,12 @@ tile.fill_grid(grid, "moon_floor")
 
 center_tile = grid.grid[len(grid.grid) // 2][len(grid.grid[0]) // 2]
 center_tile.layers.append("rocket")
-#print(f"Grid:\n{grid}")
 
 # Initialize cursor
 tile_cursor = selection.Cursor(GRID_SIZE)
 
 # Initialize structure selection
 buildable_structures = [name for name, structure in STRUCTURE_MAP.items() if structure.buildable]
-buildable_structures.append("oil_container")
 structure_selection = selection.StructureSelection(buildable_structures)
 
 # Set up pygame
@@ -135,11 +141,11 @@ def handle_events(structure_map):
         selected_tile = grid.grid[tile_cursor.position[0]][tile_cursor.position[1]]
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                structure.build_structure(stats, "oil_pump", selected_tile, structure_map)
+                structure.build_structure(stats, structure_selection.selected, selected_tile, structure_map)
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_c:
-                structure.build_structure(stats, "oil_pump", selected_tile, structure_map)
+                structure.build_structure(stats, structure_selection.selected, selected_tile, structure_map)
                 return
 
             if event.key == pygame.K_RIGHT:
@@ -154,8 +160,6 @@ def handle_events(structure_map):
 
         if event.type == PRODUCTION_UPDATE_EVENT:
             structure.process_structures(grid, stats, structure_map)
-            #print(f"Stats: {stats}")
-        #print(f"Cursor: {tile_cursor}")
 
 PRODUCTION_UPDATE_EVENT = pygame.USEREVENT + 1
 pygame.time.set_timer(PRODUCTION_UPDATE_EVENT, PRODUCTION_TIME * 1000)
